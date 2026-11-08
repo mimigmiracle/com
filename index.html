@@ -38,14 +38,13 @@
         
         .btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: opacity 0.2s, transform 0.1s; margin-top: 10px; }
         .btn:active { transform: scale(0.98); }
-        .btn-secondary { background: transparent; border: 1px solid #334155; color: var(--text-muted); }
+        .btn-secondary { background: #1e293b; border: 1px solid #334155; color: var(--text-muted); }
 
         /* Dashboard Screen */
-        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .user-badge { font-size: 14px; background: #1e293b; padding: 6px 12px; border-radius: 20px; color: var(--text-muted); border: 1px solid #334155; }
         
         .balance-card { background: linear-gradient(145deg, #0f1c3f, #13265c); border: 1px solid #2563eb44; border-radius: 20px; padding: 24px; text-align: center; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); position: relative; overflow: hidden; }
-        .balance-card::before { content: ''; position: absolute; top: -50px; right: -50px; width: 120px; height: 120px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; blur: 20px; }
         .balance-label { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
         .balance-amount { font-size: 32px; font-weight: 800; color: #ffffff; margin-bottom: 12px; }
         .live-ticker { display: inline-flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.15); color: var(--success); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -53,16 +52,15 @@
 
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
-        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .actions-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
         .action-tile { background: var(--bg-card); border: 1px solid #1e293b; border-radius: 14px; padding: 18px; text-align: center; cursor: pointer; transition: border 0.2s; }
         .action-tile:hover { border-color: var(--accent-blue); }
         .action-tile span { display: block; font-size: 24px; margin-bottom: 6px; }
-        .action-tile p { font-size: 13px; font-weight: bold; }
+        .action-tile p { font-size: 15px; font-weight: bold; }
 
-        .stats-box { background: var(--bg-card); border-radius: 14px; padding: 16px; border: 1px solid #1e293b; margin-top: auto; }
-        .stat-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; }
-        .stat-row:last-child { margin-bottom: 0; }
-        .stat-val { font-weight: bold; color: var(--accent-blue); }
+        .info-card { background: var(--bg-card); border-radius: 14px; padding: 16px; border: 1px solid #1e293b; margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+        .info-label { font-size: 13px; color: var(--text-muted); }
+        .info-val { font-weight: bold; color: var(--accent-blue); font-size: 14px; }
 
         /* Modal Overlay */
         .modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 13, 27, 0.85); backdrop-filter: blur(5px); z-index: 100; justify-content: center; align-items: flex-end; }
@@ -73,8 +71,6 @@
 
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .close-btn { background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; }
-
-        .resolved-name { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 12px; border-radius: 10px; color: var(--accent-blue); font-size: 14px; font-weight: bold; margin-top: 10px; display: none; text-align: center; }
         
         .error-text { color: var(--danger); font-size: 12px; margin-top: 6px; display: none; }
         .success-banner { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: var(--success); padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 15px; display: none; font-size: 14px; font-weight: bold; }
@@ -87,7 +83,7 @@
     <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="screen active login-wrapper">
         <div class="logo-icon">⚡</div>
-        <h2 style="font-size: 22px; margin-bottom: 4px;">Illuminati</h2>
+        <h2 style="font-size: 22px; margin-bottom: 4px;">Mining Vault Gateway</h2>
         <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 24px;">Enter your credentials to access system</p>
         
         <div class="input-group">
@@ -99,7 +95,7 @@
             <input type="password" id="loginPassInput" placeholder="Enter password">
         </div>
         <p id="loginError" class="error-text" style="display:block; margin-bottom:10px;"></p>
-        <button class="btn" onclick="handleLogin()">Access Dashboard</button>
+        <button class="btn" onclick="handleLogin()">Login</button>
     </div>
 
     <!-- DASHBOARD SCREEN -->
@@ -109,7 +105,10 @@
                 <h3 style="font-size: 18px;">Vault Dashboard</h3>
                 <p style="font-size: 12px; color: var(--text-muted);">Active Node: #NG-8894</p>
             </div>
-            <div class="user-badge">ID: ilumi</div>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <div class="user-badge">ID: Dumi</div>
+                <button onclick="handleLogout()" style="background:#1e293b; border:1px solid #334155; color:#94a3b8; padding:6px 10px; border-radius:12px; cursor:pointer; font-size:12px;">Logout</button>
+            </div>
         </div>
 
         <div class="balance-card">
@@ -126,21 +125,11 @@
                 <span>📤</span>
                 <p>Withdraw Funds</p>
             </div>
-            <div class="action-tile" onclick="alert('Mining rigs operating at 100% efficiency.')">
-                <span>⚡</span>
-                <p>Rig Status</p>
-            </div>
         </div>
 
-        <div class="stats-box">
-            <div class="stat-row">
-                <span style="color: var(--text-muted);">Cycle Target:</span>
-                <span class="stat-val">₦50,000 / 5 Hours</span>
-            </div>
-            <div class="stat-row" style="margin-top:8px;">
-                <span style="color: var(--text-muted);">Security Protocol:</span>
-                <span style="color: var(--success);">Member ID Locked</span>
-            </div>
+        <div class="info-card">
+            <span class="info-label">📅 Next Meeting:</span>
+            <span class="info-val">April 5th</span>
         </div>
     </div>
 
@@ -156,51 +145,96 @@
 
             <div class="input-group">
                 <label>Select Bank</label>
-                <select id="bankSelect" onchange="checkAccountLookup()">
+                <select id="bankSelect">
                     <option value="">-- Choose Nigerian Bank --</option>
                     <option value="access">Access Bank</option>
-                    <option value="gtb">Guaranty Trust Bank (GTB)</option>
-                    <option value="zenith">Zenith Bank</option>
+                    <option value="citibank">Citibank Nigeria</option>
+                    <option value="ecobank">Ecobank Nigeria</option>
+                    <option value="fidelity">Fidelity Bank</option>
                     <option value="first">First Bank of Nigeria</option>
+                    <option value="fcmb">First City Monument Bank (FCMB)</option>
+                    <option value="gtb">Guaranty Trust Bank (GTB)</option>
+                    <option value="heritage">Heritage Bank</option>
+                    <option value="keystone">Keystone Bank</option>
+                    <option value="polaris">Polaris Bank</option>
+                    <option value="providus">Providus Bank</option>
+                    <option value="stanbic">Stanbic IBTC Bank</option>
+                    <option value="standard">Standard Chartered Bank</option>
+                    <option value="sterling">Sterling Bank</option>
+                    <option value="suntrust">SunTrust Bank</option>
+                    <option value="union">Union Bank of Nigeria</option>
                     <option value="uba">United Bank for Africa (UBA)</option>
+                    <option value="unity">Unity Bank</option>
+                    <option value="wema">Wema Bank</option>
+                    <option value="zenith">Zenith Bank</option>
                     <option value="opay">OPay Digital Services</option>
                     <option value="moniepoint">Moniepoint MFB</option>
                     <option value="kuda">Kuda Bank</option>
-                    <option value="fcmb">First City Monument Bank (FCMB)</option>
-                    <option value="fidelity">Fidelity Bank</option>
-                    <option value="stanbic">Stanbic IBTC Bank</option>
-                    <option value="union">Union Bank of Nigeria</option>
+                    <option value="palmpay">PalmPay</option>
+                    <option value="sparkle">Sparkle Microfinance Bank</option>
+                    <option value="taj">TAJ Bank</option>
+                    <option value="lotus">Lotus Bank</option>
+                    <option value="finbank">Coronation Merchant Bank</option>
                 </select>
             </div>
 
             <div class="input-group">
                 <label>Account Number (10 Digits)</label>
-                <input type="text" id="accountNumberInput" maxlength="10" placeholder="Enter 10-digit account number" oninput="checkAccountLookup()">
-            </div>
-
-            <div id="resolvedNameBox" class="resolved-name"></div>
-
-            <div class="input-group" style="margin-top: 14px;">
-                <label>Withdrawal Amount (₦)</label>
-                <input type="number" id="withdrawAmountInput" placeholder="Enter amount to withdraw">
+                <input type="text" id="accountNumberInput" maxlength="10" placeholder="Enter 10-digit account number" inputmode="numeric">
             </div>
 
             <div class="input-group">
-                <label>Membership Registration ID</label>
-                <input type="text" id="membershipIdInput" placeholder="Enter required Member ID">
-                <p id="withdrawError" class="error-text"></p>
+                <label>Account Holder Name</label>
+                <input type="text" id="accountNameInput" placeholder="Enter your full name">
             </div>
 
-            <button class="btn" onclick="processWithdrawal()" style="margin-top: 15px;">Authorize Withdrawal</button>
+            <div class="input-group">
+                <label>Withdrawal Amount (₦)</label>
+                <input type="text" id="withdrawAmountInput" placeholder="Enter amount to withdraw" inputmode="numeric">
+            </div>
+
+            <div class="input-group" id="membershipGroup" style="display: none;">
+                <label>Membership Registration ID</label>
+                <input type="text" id="membershipIdInput" placeholder="Enter required Member ID (e.g. @45374628927)">
+            </div>
+
+            <p id="withdrawError" class="error-text" style="margin-bottom: 10px;"></p>
+
+            <button class="btn" id="withdrawActionBtn" onclick="handleWithdrawStep()">Proceed to Withdraw</button>
         </div>
     </div>
 
 </div>
 
 <script>
-    // Live balance configuration starting at 12,900,000 accumulating 2.73 per second
-    let currentBalance = 12900000.00;
-    const incrementRate = 2.73; // Added every second
+    // Persistent Background Accumulation Configuration
+    const BASE_BALANCE = 12900000.00;
+    const INCREMENT_PER_SEC = 2.73;
+    const STORAGE_KEY_BALANCE = "vault_current_balance_v2";
+    const STORAGE_KEY_TIMESTAMP = "vault_last_active_time_v2";
+
+    let currentBalance = BASE_BALANCE;
+    let tickerInterval = null;
+    let withdrawalStage = 1; // Stage 1: Collect Details, Stage 2: Verify Membership ID
+
+    function getStoredBalance() {
+        const savedBalance = localStorage.getItem(STORAGE_KEY_BALANCE);
+        const savedTime = localStorage.getItem(STORAGE_KEY_TIMESTAMP);
+        
+        if (savedBalance && savedTime) {
+            const now = Date.now();
+            const elapsedSeconds = (now - parseInt(savedTime)) / 1000;
+            if (elapsedSeconds > 0) {
+                return parseFloat(savedBalance) + (elapsedSeconds * INCREMENT_PER_SEC);
+            }
+        }
+        return BASE_BALANCE;
+    }
+
+    function saveVaultState() {
+        localStorage.setItem(STORAGE_KEY_BALANCE, currentBalance);
+        localStorage.setItem(STORAGE_KEY_TIMESTAMP, Date.now());
+    }
 
     function handleLogin() {
         const id = document.getElementById('loginIdInput').value.trim();
@@ -210,16 +244,29 @@
         if(id === 'ilumi' && pass === '591666') {
             document.getElementById('loginScreen').classList.remove('active');
             document.getElementById('dashScreen').classList.add('active');
+            
+            currentBalance = getStoredBalance();
             startTicker();
         } else {
             err.innerText = "Invalid Login ID or Password.";
         }
     }
 
+    function handleLogout() {
+        saveVaultState();
+        if(tickerInterval) clearInterval(tickerInterval);
+        document.getElementById('dashScreen').classList.remove('active');
+        document.getElementById('loginScreen').classList.add('active');
+        document.getElementById('loginIdInput').value = '';
+        document.getElementById('loginPassInput').value = '';
+    }
+
     function startTicker() {
-        setInterval(() => {
-            currentBalance += incrementRate;
+        if(tickerInterval) clearInterval(tickerInterval);
+        tickerInterval = setInterval(() => {
+            currentBalance += INCREMENT_PER_SEC;
             document.getElementById('balanceDisplay').innerText = '₦' + currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            saveVaultState();
         }, 1000);
     }
 
@@ -227,63 +274,64 @@
         document.getElementById('withdrawModal').classList.add('active');
         document.getElementById('withdrawSuccessBox').style.display = 'none';
         document.getElementById('withdrawError').style.display = 'none';
+        document.getElementById('membershipGroup').style.display = 'none';
+        document.getElementById('withdrawActionBtn').innerText = "Proceed to Withdraw";
+        withdrawalStage = 1;
     }
 
     function closeWithdrawModal() {
         document.getElementById('withdrawModal').classList.remove('active');
     }
 
-    // Simulated OPay-style instant account name resolution
-    function checkAccountLookup() {
+    function handleWithdrawStep() {
         const bank = document.getElementById('bankSelect').value;
         const accNum = document.getElementById('accountNumberInput').value.trim();
-        const nameBox = document.getElementById('resolvedNameBox');
-
-        if(bank && accNum.length === 10) {
-            // Simulated lookup response name generator
-            nameBox.style.display = 'block';
-            nameBox.innerText = "Account Holder: ESEZOBOR OSE PROMISE";
-        } else {
-            nameBox.style.display = 'none';
-        }
-    }
-
-    function processWithdrawal() {
-        const bank = document.getElementById('bankSelect').value;
-        const accNum = document.getElementById('accountNumberInput').value.trim();
+        const accName = document.getElementById('accountNameInput').value.trim();
         const amount = parseFloat(document.getElementById('withdrawAmountInput').value);
-        const memberId = document.getElementById('membershipIdInput').value.trim();
         const errBox = document.getElementById('withdrawError');
         const successBox = document.getElementById('withdrawSuccessBox');
 
         errBox.style.display = 'none';
 
-        if(!bank || accNum.length !== 10) {
-            errBox.innerText = "Please select a bank and enter a valid 10-digit account number.";
-            errBox.style.display = 'block';
-            return;
-        }
+        if(withdrawalStage === 1) {
+            // Stage 1 validation
+            if(!bank || accNum.length !== 10 || !accName) {
+                errBox.innerText = "Please select a bank, provide a valid 10-digit account number, and enter your account name.";
+                errBox.style.display = 'block';
+                return;
+            }
 
-        if(!amount || amount <= 0 || amount > currentBalance) {
-            errBox.innerText = "Invalid withdrawal amount or insufficient funds.";
-            errBox.style.display = 'block';
-            return;
-        }
+            if(!amount || isNaN(amount) || amount <= 0 || amount > currentBalance) {
+                errBox.innerText = "Invalid withdrawal amount or insufficient funds.";
+                errBox.style.display = 'block';
+                return;
+            }
 
-        // Strict Membership ID check
-        if(memberId !== '@45374628927') {
-            errBox.innerText = "Invalid Membership Registration ID. Authorization denied.";
-            errBox.style.display = 'block';
-            return;
-        }
+            // Transition directly to Membership ID requirement prompt
+            withdrawalStage = 2;
+            document.getElementById('membershipGroup').style.display = 'block';
+            document.getElementById('withdrawActionBtn').innerText = "Authorize Withdrawal";
+            errBox.style.display = 'none';
+        } 
+        else if(withdrawalStage === 2) {
+            // Stage 2: Membership ID Verification check
+            const memberId = document.getElementById('membershipIdInput').value.trim();
 
-        // Successful withdrawal validation
-        currentBalance -= amount;
-        successBox.style.display = 'block';
-        
-        setTimeout(() => {
-            closeWithdrawModal();
-        }, 3000);
+            if(memberId !== '@45374628927') {
+                errBox.innerText = "Invalid Membership Registration ID. Authorization denied.";
+                errBox.style.display = 'block';
+                return;
+            }
+
+            // Finalizing successful withdrawal execution
+            currentBalance -= amount;
+            saveVaultState();
+            successBox.style.display = 'block';
+            
+            setTimeout(() => {
+                closeWithdrawModal();
+            }, 3000);
+        }
     }
 </script>
 
