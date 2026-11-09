@@ -188,23 +188,23 @@
         <button class="btn" onclick="acceptRules()">I Agree</button>
     </div>
 
-    <!-- STEP 4: VIDEO & VOICE RECORDING SCREEN -->
+        <!-- STEP 4: PHOTO UPLOAD VERIFICATION SCREEN -->
     <div id="screenVideo" class="screen">
-        <h2 style="font-size: 20px; margin-bottom: 4px;">Take this Oath🔯</h2>
-        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">Read out the text below clearly while recording.</p>
+        <h2 style="font-size: 20px; margin-bottom: 4px;">Photo Verification</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Please upload a clear picture of yourself to complete verification.</p>
 
-        <div class="teleprompter-box">
-            <div class="scrolling-text">i pledge my loyalty and allegiance to the brotherhood, Never to disobey or go against the laws of the brotherhood!!! And I will serve the brotherhood for the rest of my life I will never go back, Forward Ever.</div>
+        <div class="input-group" style="text-align: center; padding: 30px; border: 2px dashed #2563eb55; border-radius: 14px; background: var(--bg-card); margin-bottom: 20px;">
+            <input type="file" id="photoUploadInput" accept="image/*" style="display: none;" onchange="previewUserPhoto(event)">
+            <div id="photoPreviewContainer" onclick="document.getElementById('photoUploadInput').click()" style="cursor: pointer;">
+                <div style="font-size: 40px; margin-bottom: 10px;">📷</div>
+                <p style="font-size: 14px; font-weight: bold; color: var(--text-main);">Click here to upload your picture</p>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Supports JPG, PNG</p>
+            </div>
+            <img id="uploadedPhotoPreview" style="display: none; width: 100%; max-height: 220px; object-fit: cover; border-radius: 10px; margin-top: 10px;">
         </div>
 
-        <div class="camera-preview-container">
-            <video id="webcamVideo" autoplay playsinline muted></video>
-        </div>
-
-        <div style="display: flex; gap: 10px;">
-            <button class="btn btn-secondary" id="restartBtn" onclick="restartRecording()" style="display:none;">Restart</button>
-            <button class="btn" id="recordBtn" onclick="toggleRecording()">Start Recording</button>
-        </div>
+        <p id="photoError" class="error-text" style="margin-bottom: 10px;"></p>
+        <button class="btn" onclick="submitPhotoVerification()">Submit & Proceed</button>
     </div>
 
     <!-- STEP 5: DASHBOARD SCREEN -->
