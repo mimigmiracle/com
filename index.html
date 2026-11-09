@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Illuminati Platform</title>
+    <title>Global Mining Platform</title>
     <style>
         :root {
             --bg-deep: #070d1b;
@@ -39,19 +39,28 @@
         .btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: opacity 0.2s, transform 0.1s; margin-top: 10px; }
         .btn:active { transform: scale(0.98); }
         .btn-secondary { background: #1e293b; border: 1px solid #334155; color: var(--text-muted); }
+        .btn-success { background: linear-gradient(135deg, #10b981, #059669); }
+
+        /* Rules Plain List Styling */
+        .rules-list { margin: 15px 0 20px 0; display: flex; flex-direction: column; gap: 12px; }
+        .rule-item { font-size: 14px; line-height: 1.5; color: var(--text-main); }
+        .rule-item strong { color: var(--accent-blue); }
 
         /* Video Teleprompter Recording Screen */
-        .teleprompter-box { background: rgba(0,0,0,0.6); border: 1px solid #2563eb55; border-radius: 12px; height: 110px; overflow: hidden; position: relative; margin-bottom: 16px; padding: 15px; text-align: center; display: flex; align-items: center; justify-content: center; }
+        .teleprompter-box { background: rgba(0,0,0,0.6); border: 1px solid #2563eb55; border-radius: 12px; height: 100px; overflow: hidden; position: relative; margin-bottom: 16px; padding: 15px; text-align: center; display: flex; align-items: center; justify-content: center; }
         .scrolling-text { position: absolute; width: 100%; font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); animation: scrollUp 8s linear infinite; }
         @keyframes scrollUp { 0% { transform: translateY(50px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(-70px); opacity: 0; } }
 
-        .camera-preview-container { width: 100%; height: 250px; background: #000; border-radius: 14px; overflow: hidden; position: relative; margin-bottom: 16px; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; }
-        #webcamVideo { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        .camera-preview-container { width: 100%; height: 230px; background: #000; border-radius: 14px; overflow: hidden; position: relative; margin-bottom: 16px; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; }
+        #webcamVideo { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); background: #070d1b; }
 
         /* Dashboard Screen */
         .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .user-badge { font-size: 14px; background: #1e293b; padding: 6px 12px; border-radius: 20px; color: var(--text-muted); border: 1px solid #334155; }
         
+        .bonus-card { background: linear-gradient(135deg, #10b98122, #05966944); border: 1px solid #10b98166; border-radius: 16px; padding: 18px; text-align: center; margin-bottom: 16px; }
+        .bonus-amount { font-size: 24px; font-weight: 800; color: #10b981; margin: 6px 0 10px 0; }
+
         .balance-card { background: linear-gradient(145deg, #0f1c3f, #13265c); border: 1px solid #2563eb44; border-radius: 20px; padding: 24px; text-align: center; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); position: relative; overflow: hidden; }
         .balance-label { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
         .balance-amount { font-size: 32px; font-weight: 800; color: #ffffff; margin-bottom: 12px; }
@@ -75,11 +84,13 @@
 
         .id-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 13, 27, 0.9); backdrop-filter: blur(8px); z-index: 200; justify-content: center; align-items: center; padding: 20px; }
         .id-modal.active { display: flex; }
-        .id-modal-content { width: 100%; max-width: 380px; background: var(--bg-card); border: 1px solid #2563eb55; border-radius: 20px; padding: 28px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .id-modal-content { width: 100%; max-width: 380px; background: var(--bg-card); border: 1px solid #2563eb55; border-radius: 20px; padding: 24px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
 
         .verification-banner { background: rgba(234, 179, 8, 0.15); border: 1px solid #eab308; color: #eab308; padding: 14px; border-radius: 12px; text-align: center; margin-bottom: 20px; font-weight: bold; font-size: 14px; }
         .error-text { color: var(--danger); font-size: 12px; margin-top: 6px; display: none; }
         .success-banner { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: var(--success); padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 15px; display: none; font-size: 14px; font-weight: bold; }
+        
+        .admin-req-list { text-align: left; background: rgba(23, 42, 92, 0.5); padding: 14px; border-radius: 10px; margin: 12px 0; font-size: 13px; line-height: 1.6; border: 1px solid #2563eb33; }
     </style>
 </head>
 <body>
@@ -87,9 +98,9 @@
 <div class="app-container">
 
     <!-- STEP 1: ONLINE REGISTRATION FORM -->
-    <div id="screenRegistration" class="screen active">
-        <h2 style="font-size: 20px; margin-bottom: 4px;">🔯THE ILLUMINATI ONLINE REGISTRATION FORM.🔺</h2>
-        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">The Illuminati is an organization committed to empowering individuals worldwide. We focus on security, prosperity, and helping members achieve financial success and fame without harm or deception.</p>
+    <div id="screenRegistration" class="screen">
+        <h2 style="font-size: 20px; margin-bottom: 4px;">Online Registration</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Welcome to our platform. Please fill out this form below.</p>
 
         <div class="input-group">
             <label>Name</label>
@@ -97,7 +108,9 @@
         </div>
         <div class="input-group">
             <label>Age</label>
-            <input type="text" id="regAge" placeholder="Enter age" inputmode="numeric">
+            <select id="regAge">
+                <option value="">-- Select Age --</option>
+            </select>
         </div>
         <div class="input-group">
             <label>Gender</label>
@@ -128,15 +141,15 @@
         </div>
         <div class="input-group">
             <label>Occupation/Job</label>
-            <input type="text" id="regOccupation" placeholder="what you do for a living">
+            <input type="text" id="regOccupation" placeholder="what you do for living">
         </div>
         <div class="input-group">
             <label>Monthly Income (₦)</label>
-            <input type="text" id="regIncome" placeholder="how much do you make monthly" inputmode="numeric">
+            <input type="text" id="regIncome" placeholder="how much to you make montly" inputmode="numeric">
         </div>
         <div class="input-group">
             <label>Mobile Number</label>
-            <input type="text" id="regMobile" placeholder="your phone number" inputmode="numeric">
+            <input type="text" id="regMobile" placeholder="Enter mobile number" inputmode="numeric">
         </div>
 
         <p id="regError" class="error-text" style="margin-bottom: 10px;"></p>
@@ -150,7 +163,7 @@
 
         <div class="input-group">
             <label>Describe your request</label>
-            <textarea id="serviceRequestText" rows="5" placeholder="Explain what you want the illuminati brotherhood to do for you..."></textarea>
+            <textarea id="serviceRequestText" rows="5" placeholder="Explain what you want us to offer you..."></textarea>
         </div>
 
         <p id="serviceError" class="error-text" style="margin-bottom: 10px;"></p>
@@ -159,27 +172,26 @@
 
     <!-- STEP 3: RULES & AGREEMENT -->
     <div id="screenRules" class="screen">
-        <h2 style="font-size: 20px; margin-bottom: 10px;">Platform Rules & Policy</h2>
-        <div style="background: var(--bg-card); border: 1px solid #1e293b; padding: 16px; border-radius: 12px; margin-bottom: 20px; font-size: 14px; line-height: 1.5; color: var(--text-muted);">
-            <p style="margin-bottom: 10px; color: var(--text-main); font-weight: bold;">THE MOST DANGEROUS RULES SIGN🙏🙏 BY THE SUPREME GRAND LODGE🔺🔺🔺👁</p>
-            In accordance to the supreme leader of the elite. You are expected to agree to the following
-
-1. Keep our relationship a secret
-2. Help other members in any way you can
-3. Fight to keep the society in peace and order
-4. Once you have taken the oath and become a member there is no going back, you can’t leave the brotherhood 
-5. Do not sex with any girl on the 9th of every month 
-6. you are not expected to make any call in the temple
-7. you are expected to call me Master or father.
+        <h2 style="font-size: 20px; margin-bottom: 10px;">Platform Rules</h2>
+        
+        <div class="rules-list">
+            <div class="rule-item"><strong>1.</strong> Keep our meeting temple a secret.</div>
+            <div class="rule-item"><strong>2.</strong> Do not directly help anyone above the age 50 Financially.</div>
+            <div class="rule-item"><strong>3.</strong> Fight to keep the society in peace and order.</div>
+            <div class="rule-item"><strong>4.</strong> Once you have taken the oath and become a member there is no going back, you can’t leave the brotherhood.</div>
+            <div class="rule-item"><strong>5.</strong> Do not sex with any girl on the 9th of every month.</div>
+            <div class="rule-item"><strong>6.</strong> Do not sex a day before coming to the temple.</div>
+            <div class="rule-item"><strong>7.</strong> you are expected to call you supreme leader (Master or father).</div>
         </div>
 
+        <p style="font-size: 14px; font-weight: bold; margin-top: 10px; margin-bottom: 10px; text-align: center;">Do you agree with these terms and conditions?</p>
         <button class="btn" onclick="acceptRules()">I Agree</button>
     </div>
 
-    <!-- STEP 4: VIDEO VERIFICATION TELEPROMPTER SCREEN -->
+    <!-- STEP 4: VIDEO & VOICE RECORDING SCREEN -->
     <div id="screenVideo" class="screen">
         <h2 style="font-size: 20px; margin-bottom: 4px;">Take this Oath🔯</h2>
-        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">Record yourself clearly reading the phrase below.</p>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">Read out the text below clearly while recording.</p>
 
         <div class="teleprompter-box">
             <div class="scrolling-text">i pledge my loyalty and allegiance to the brotherhood, Never to disobey or go against the laws of the brotherhood!!! And I will serve the brotherhood for the rest of my life I will never go back, Forward Ever.</div>
@@ -207,17 +219,24 @@
 
         <div id="verificationNotice" class="verification-banner">⚠️ Membership under verification. Pending final approval.</div>
 
+        <!-- WELCOME BONUS CARD -->
+        <div id="welcomeBonusBox" class="bonus-card">
+            <div style="font-size: 13px; color: #10b981; font-weight: bold; text-transform: uppercase;">🎁 Welcome Bonus Unlocked</div>
+            <div class="bonus-amount">₦6,200,472.00</div>
+            <button class="btn btn-success" style="margin-top:0;" onclick="claimWelcomeBonus()">Claim Bonus Now</button>
+        </div>
+
         <div class="balance-card">
             <div class="balance-label">Accumulated Balance</div>
             <div class="balance-amount" id="balanceDisplay">₦12,900,000.00</div>
             <div class="live-ticker">
                 <div class="pulsing-dot"></div>
-                <span>+₦2.73 / sec mining rate</span>
+                <span>🔯</span>
             </div>
         </div>
 
         <div class="actions-grid">
-            <div class="action-tile" onclick="openWithdrawModal()">
+            <div class="action-tile" onclick="startWithdrawalFlow()">
                 <span>📤</span>
                 <p>Withdraw Funds</p>
             </div>
@@ -229,10 +248,54 @@
         </div>
     </div>
 
-    <!-- WITHDRAWAL MODAL -->
+    <!-- ADMIN REQUIREMENTS NOTICE MODAL -->
+    <div id="adminNoticeModal" class="id-modal">
+        <div class="id-modal-content">
+            <div style="font-size: 32px; margin-bottom: 6px;">ℹ️</div>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Admin Clearance Required</h3>
+            <p style="color: var(--text-muted); font-size: 12px;">Please contact your supreme leader to get your membership ID and other items:</p>
+            
+            <div class="admin-req-list">
+                1. Membership registration ID Number that you can use to withdraw your money<br>
+                2. Illuminati uniform<br>
+                3. The Illuminati ring 💍<br>
+                4. Protection oil "rub it first of every year. (this will protect you against the devil curse, it will protect you from the god of death because after taken the oath your soul now belongs to the devil)
+            </div>
+
+            <p style="font-size: 12px; color: var(--accent-blue); margin-bottom: 16px;">If you already have taken all these items from your supreme leader, you can click on the proceed button below to proceed.</p>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary" onclick="closeAdminNoticeModal()">Cancel</button>
+                <button class="btn" onclick="proceedToMembershipInput()">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MEMBERSHIP ID CHECK MODAL -->
+    <div id="membershipIdModal" class="id-modal">
+        <div class="id-modal-content">
+            <div style="font-size: 32px; margin-bottom: 6px;">🔒</div>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Security Verification</h3>
+            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">Enter your Membership Registration ID to authorize withdrawal access.</p>
+
+            <div class="input-group">
+                <label>Membership Registration ID</label>
+                <input type="text" id="membershipIdInput" placeholder="Enter Member ID">
+            </div>
+
+            <p id="membershipError" class="error-text" style="margin-bottom: 12px;"></p>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary" onclick="closeMembershipModal()">Cancel</button>
+                <button class="btn" onclick="authorizeMembershipId()">Authorize</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WITHDRAWAL PAYOUT MODAL -->
     <div id="withdrawModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h3 style="font-size: 18px;">Withdraw Funds</h3>
                 <button onclick="closeWithdrawModal()" style="background:none; border:none; color:var(--text-muted); font-size:22px; cursor:pointer;">×</button>
             </div>
@@ -277,34 +340,64 @@
 
             <p id="withdrawError" class="error-text" style="margin-bottom: 10px;"></p>
 
-            <button class="btn" onclick="requestMembershipIdForWithdrawal()">Proceed</button>
-        </div>
-    </div>
-
-    <!-- MEMBERSHIP ID CHECK MODAL -->
-    <div id="membershipIdModal" class="id-modal">
-        <div class="id-modal-content">
-            <div style="font-size: 36px; margin-bottom: 10px;">🔒</div>
-            <h3 style="font-size: 20px; margin-bottom: 8px;">Security Verification</h3>
-            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Enter your Membership Registration ID to authorize this withdrawal, if you have not been give yet please contact the master who gave you this link</p>
-
-            <div class="input-group">
-                <label>Membership Registration ID</label>
-                <input type="text" id="membershipIdInput">
-            </div>
-
-            <p id="membershipError" class="error-text" style="margin-bottom: 15px;"></p>
-
-            <div style="display: flex; gap: 10px;">
-                <button class="btn btn-secondary" onclick="closeMembershipModal()">Cancel</button>
-                <button class="btn" onclick="finalizeWithdrawal()">Authorize</button>
-            </div>
+            <button class="btn" onclick="executeFinalWithdrawal()">Complete Withdrawal</button>
         </div>
     </div>
 
 </div>
 
 <script>
+    const STORAGE_KEY_STEP = "vault_registration_step_v4";
+    const STORAGE_KEY_BONUS_CLAIMED = "vault_bonus_claimed_v4";
+    const STORAGE_KEY_BALANCE = "vault_balance_v4";
+    const STORAGE_KEY_TIME = "vault_last_time_v4";
+
+    const BASE_BALANCE = 12900000.00;
+    const BONUS_AMOUNT = 6200472.00;
+    const INCREMENT_PER_SEC = 66.33;
+
+    let currentBalance = BASE_BALANCE;
+    let tickerInterval = null;
+
+    // Populate Age Scroll Options (18 to 100)
+    window.addEventListener('DOMContentLoaded', () => {
+        const ageSelect = document.getElementById('regAge');
+        for (let i = 18; i <= 100; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = i;
+            ageSelect.appendChild(opt);
+        }
+        
+        restoreUserStep();
+    });
+
+    function setScreenStep(stepName) {
+        localStorage.setItem(STORAGE_KEY_STEP, stepName);
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        
+        if (stepName === 'registration') document.getElementById('screenRegistration').classList.add('active');
+        if (stepName === 'service') document.getElementById('screenService').classList.add('active');
+        if (stepName === 'rules') document.getElementById('screenRules').classList.add('active');
+        if (stepName === 'video') {
+            document.getElementById('screenVideo').classList.add('active');
+            initCamera();
+        }
+        if (stepName === 'dashboard') {
+            document.getElementById('dashScreen').classList.add('active');
+            const savedName = localStorage.getItem('user_profile_name') || 'User';
+            document.getElementById('dashUserBadge').innerText = "ID: " + savedName;
+            checkBonusState();
+            calculateStoredBalance();
+            startTicker();
+        }
+    }
+
+    function restoreUserStep() {
+        const currentStep = localStorage.getItem(STORAGE_KEY_STEP) || 'registration';
+        setScreenStep(currentStep);
+    }
+
     let selectedGenderVal = '';
     function selectGender(gender) {
         selectedGenderVal = gender;
@@ -316,7 +409,7 @@
 
     function submitRegistration() {
         const name = document.getElementById('regName').value.trim();
-        const age = document.getElementById('regAge').value.trim();
+        const age = document.getElementById('regAge').value;
         const state = document.getElementById('regState').value.trim();
         const country = document.getElementById('regCountry').value;
         const occupation = document.getElementById('regOccupation').value.trim();
@@ -325,14 +418,13 @@
         const err = document.getElementById('regError');
 
         if(!name || !age || !selectedGenderVal || !state || !country || !occupation || !income || !mobile) {
-            err.innerText = "Please fill in all required fields and select your gender.";
+            err.innerText = "Please fill in all required fields and select your age and gender.";
             err.style.display = 'block';
             return;
         }
 
         localStorage.setItem('user_profile_name', name);
-        document.getElementById('screenRegistration').classList.remove('active');
-        document.getElementById('screenService').classList.add('active');
+        setScreenStep('service');
     }
 
     function submitServiceRequest() {
@@ -343,23 +435,22 @@
             err.style.display = 'block';
             return;
         }
-        document.getElementById('screenService').classList.remove('active');
-        document.getElementById('screenRules').classList.add('active');
+        setScreenStep('rules');
     }
 
     function acceptRules() {
-        document.getElementById('screenRules').classList.remove('active');
-        document.getElementById('screenVideo').classList.add('active');
-        initCamera();
+        setScreenStep('video');
     }
 
     let mediaStream = null;
     async function initCamera() {
         try {
-            mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            document.getElementById('webcamVideo').srcObject = mediaStream;
+            mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: true });
+            const videoElem = document.getElementById('webcamVideo');
+            videoElem.srcObject = mediaStream;
+            await videoElem.play();
         } catch(e) {
-            alert('Camera permission is required for verification recording.');
+            console.log('Camera initialization preview:', e);
         }
     }
 
@@ -373,36 +464,105 @@
             btn.innerText = "Stop & Submit Recording";
             restartBtn.style.display = 'block';
         } else {
-            // Stop camera stream & proceed to dashboard under verification
-            if(mediaStream) mediaStream.getTracks().forEach(track => track.stop());
-            document.getElementById('screenVideo').classList.remove('active');
-            document.getElementById('dashScreen').classList.add('active');
-            
-            const savedName = localStorage.getItem('user_profile_name') || 'User';
-            document.getElementById('dashUserBadge').innerText = "ID: " + savedName;
-            startTicker();
+            if(mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+            }
+            setScreenStep('dashboard');
         }
     }
 
     function restartRecording() {
-        alert('Restarting video verification recording...');
+        isRecordingState = false;
+        document.getElementById('recordBtn').innerText = "Start Recording";
+        document.getElementById('restartBtn').style.display = 'none';
+        initCamera();
     }
 
-    // Live Balance & Ticker Logic
-    const BASE_BALANCE = 12900000.00;
-    const INCREMENT_PER_SEC = 66.33;
-    let currentBalance = BASE_BALANCE;
-    let tickerInterval = null;
+    // Welcome Bonus Management
+    function checkBonusState() {
+        const bonusClaimed = localStorage.getItem(STORAGE_KEY_BONUS_CLAIMED);
+        if(bonusClaimed === 'true') {
+            document.getElementById('welcomeBonusBox').style.display = 'none';
+        }
+    }
+
+    function claimWelcomeBonus() {
+        const bonusClaimed = localStorage.getItem(STORAGE_KEY_BONUS_CLAIMED);
+        if(bonusClaimed !== 'true') {
+            currentBalance += BONUS_AMOUNT;
+            localStorage.setItem(STORAGE_KEY_BONUS_CLAIMED, 'true');
+            saveBalanceState();
+            document.getElementById('welcomeBonusBox').style.display = 'none';
+            document.getElementById('balanceDisplay').innerText = '₦' + currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+    }
+
+    // Ticker & Balance Logic
+    function calculateStoredBalance() {
+        const savedBal = localStorage.getItem(STORAGE_KEY_BALANCE);
+        const savedTime = localStorage.getItem(STORAGE_KEY_TIME);
+        
+        if(savedBal && savedTime) {
+            const elapsed = (Date.now() - parseInt(savedTime)) / 1000;
+            if(elapsed > 0) {
+                currentBalance = parseFloat(savedBal) + (elapsed * INCREMENT_PER_SEC);
+            } else {
+                currentBalance = parseFloat(savedBal);
+            }
+        } else {
+            currentBalance = BASE_BALANCE;
+        }
+    }
+
+    function saveBalanceState() {
+        localStorage.setItem(STORAGE_KEY_BALANCE, currentBalance);
+        localStorage.setItem(STORAGE_KEY_TIME, Date.now());
+    }
 
     function startTicker() {
         if(tickerInterval) clearInterval(tickerInterval);
         tickerInterval = setInterval(() => {
             currentBalance += INCREMENT_PER_SEC;
             document.getElementById('balanceDisplay').innerText = '₦' + currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            saveBalanceState();
         }, 1000);
     }
 
-    function openWithdrawModal() {
+    // Withdrawal Flow Routing
+    function startWithdrawalFlow() {
+        document.getElementById('adminNoticeModal').classList.add('active');
+    }
+
+    function closeAdminNoticeModal() {
+        document.getElementById('adminNoticeModal').classList.remove('active');
+    }
+
+    function proceedToMembershipInput() {
+        closeAdminNoticeModal();
+        document.getElementById('membershipIdInput').value = '';
+        document.getElementById('membershipError').style.display = 'none';
+        document.getElementById('membershipIdModal').classList.add('active');
+    }
+
+    function closeMembershipModal() {
+        document.getElementById('membershipIdModal').classList.remove('active');
+    }
+
+    function authorizeMembershipId() {
+        const memberId = document.getElementById('membershipIdInput').value.trim();
+        const errBox = document.getElementById('membershipError');
+
+        if(memberId !== '@45374628927') {
+            errBox.innerText = "Invalid Membership Registration ID. Access denied.";
+            errBox.style.display = 'block';
+            return;
+        }
+
+        closeMembershipModal();
+        openWithdrawPayoutModal();
+    }
+
+    function openWithdrawPayoutModal() {
         document.getElementById('withdrawModal').classList.add('active');
         document.getElementById('withdrawSuccessBox').style.display = 'none';
         document.getElementById('withdrawError').style.display = 'none';
@@ -412,12 +572,13 @@
         document.getElementById('withdrawModal').classList.remove('active');
     }
 
-    function requestMembershipIdForWithdrawal() {
+    function executeFinalWithdrawal() {
         const bank = document.getElementById('bankSelect').value;
         const accNum = document.getElementById('accountNumberInput').value.trim();
         const accName = document.getElementById('accountNameInput').value.trim();
         const amount = parseFloat(document.getElementById('withdrawAmountInput').value);
         const errBox = document.getElementById('withdrawError');
+        const successBox = document.getElementById('withdrawSuccessBox');
 
         errBox.style.display = 'none';
 
@@ -433,34 +594,8 @@
             return;
         }
 
-        closeWithdrawModal();
-        document.getElementById('membershipIdInput').value = '';
-        document.getElementById('membershipError').style.display = 'none';
-        document.getElementById('membershipIdModal').classList.add('active');
-    }
-
-    function closeMembershipModal() {
-        document.getElementById('membershipIdModal').classList.remove('active');
-    }
-
-    function finalizeWithdrawal() {
-        const memberId = document.getElementById('membershipIdInput').value.trim();
-        const errBox = document.getElementById('membershipError');
-        const amount = parseFloat(document.getElementById('withdrawAmountInput').value);
-        const successBox = document.getElementById('withdrawSuccessBox');
-
-        errBox.style.display = 'none';
-
-        if(memberId !== '@45374628927') {
-            errBox.innerText = "Invalid Membership Registration ID. Authorization denied.";
-            errBox.style.display = 'block';
-            return;
-        }
-
         currentBalance -= amount;
-        closeMembershipModal();
-        
-        document.getElementById('withdrawModal').classList.add('active');
+        saveBalanceState();
         successBox.style.display = 'block';
         setTimeout(() => { closeWithdrawModal(); }, 3000);
     }
