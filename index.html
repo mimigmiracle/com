@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Illuminati Vault</title>
+    <title>Illuminati Platform</title>
     <style>
         :root {
             --bg-deep: #070d1b;
@@ -19,26 +19,34 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font); touch-action: manipulation; }
-        html, body { height: 100%; height: 100dvh; background: var(--bg-deep); color: var(--text-main); overflow: hidden; position: fixed; width: 100%; }
-        body { display: flex; justify-content: center; align-items: center; }
+        html, body { height: 100vh; height: 100dvh; background: var(--bg-deep); color: var(--text-main); display: flex; justify-content: center; align-items: center; overflow: hidden; position: fixed; width: 100%; }
 
-        .app-container { width: 100%; max-width: 480px; height: 100%; height: 100dvh; background: var(--bg-deep); display: flex; flex-direction: column; position: relative; }
+        .app-container { width: 100%; max-width: 480px; height: 100%; height: 100dvh; background: var(--bg-deep); display: flex; flex-direction: column; position: relative; overflow: hidden; }
         @media (min-width: 500px) { .app-container { height: 90vh; border-radius: 16px; border: 1px solid #1e293b; box-shadow: 0 10px 30px rgba(0,0,0,0.8); } }
 
-        /* Screens */
-        .screen { display: none; flex: 1; flex-direction: column; padding: 24px; overflow-y: auto; }
+        .screen { display: none; flex: 1; flex-direction: column; padding: 24px; overflow-y: auto; height: 100%; }
         .screen.active { display: flex; }
 
-        /* Login Screen */
-        .login-wrapper { justify-content: center; align-items: center; text-align: center; gap: 20px; }
-        .logo-icon { width: 70px; height: 70px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 0 20px var(--accent-glow); margin-bottom: 10px; }
         .input-group { width: 100%; text-align: left; margin-bottom: 14px; }
         .input-group label { font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 6px; }
-        input, select { width: 100%; background: var(--bg-input); border: 1px solid #2563eb33; border-radius: 10px; padding: 14px; color: var(--text-main); font-size: 16px; outline: none; transition: border 0.2s; }
-        input:focus, select:focus { border-color: var(--accent-blue); box-shadow: 0 0 10px var(--accent-glow); }
-        
+        input, select, textarea { width: 100%; background: var(--bg-input); border: 1px solid #2563eb33; border-radius: 10px; padding: 14px; color: var(--text-main); font-size: 16px; outline: none; transition: border 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent-blue); box-shadow: 0 0 10px var(--accent-glow); }
+
+        .gender-container { display: flex; gap: 12px; }
+        .gender-btn { flex: 1; background: var(--bg-input); border: 1px solid #2563eb33; border-radius: 10px; padding: 14px; color: var(--text-muted); font-size: 16px; font-weight: bold; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .gender-btn.selected { background: var(--accent-blue); color: white; border-color: var(--accent-blue); box-shadow: 0 0 10px var(--accent-glow); }
+
         .btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: opacity 0.2s, transform 0.1s; margin-top: 10px; }
         .btn:active { transform: scale(0.98); }
+        .btn-secondary { background: #1e293b; border: 1px solid #334155; color: var(--text-muted); }
+
+        /* Video Teleprompter Recording Screen */
+        .teleprompter-box { background: rgba(0,0,0,0.6); border: 1px solid #2563eb55; border-radius: 12px; height: 110px; overflow: hidden; position: relative; margin-bottom: 16px; padding: 15px; text-align: center; display: flex; align-items: center; justify-content: center; }
+        .scrolling-text { position: absolute; width: 100%; font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); animation: scrollUp 8s linear infinite; }
+        @keyframes scrollUp { 0% { transform: translateY(50px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(-70px); opacity: 0; } }
+
+        .camera-preview-container { width: 100%; height: 250px; background: #000; border-radius: 14px; overflow: hidden; position: relative; margin-bottom: 16px; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; }
+        #webcamVideo { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
         /* Dashboard Screen */
         .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -49,7 +57,6 @@
         .balance-amount { font-size: 32px; font-weight: 800; color: #ffffff; margin-bottom: 12px; }
         .live-ticker { display: inline-flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.15); color: var(--success); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.3); }
         .pulsing-dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulse 1.5s infinite; }
-
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
         .actions-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
@@ -59,69 +66,153 @@
         .action-tile p { font-size: 15px; font-weight: bold; }
 
         .info-card { background: var(--bg-card); border-radius: 14px; padding: 16px; border: 1px solid #1e293b; margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
-        .info-label { font-size: 13px; color: var(--text-muted); }
-        .info-val { font-weight: bold; color: var(--accent-blue); font-size: 14px; }
 
-        /* Modal Overlay */
-        .modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 13, 27, 0.85); backdrop-filter: blur(5px); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
+        /* Modals */
+        .modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 13, 27, 0.85); backdrop-filter: blur(5px); z-index: 100; justify-content: center; align-items: flex-end; }
         .modal.active { display: flex; }
-        .modal-content { width: 100%; max-width: 400px; background: var(--bg-card); border: 1px solid #2563eb44; border-radius: 20px; padding: 24px; animation: scaleUp 0.25s ease-out; max-height: 90vh; overflow-y: auto; }
+        .modal-content { width: 100%; max-width: 480px; background: var(--bg-card); border-top: 1px solid #2563eb44; border-radius: 20px 20px 0 0; padding: 24px; animation: slideUp 0.3s ease-out; max-height: 85vh; overflow-y: auto; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .id-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 13, 27, 0.9); backdrop-filter: blur(8px); z-index: 200; justify-content: center; align-items: center; padding: 20px; }
+        .id-modal.active { display: flex; }
+        .id-modal-content { width: 100%; max-width: 380px; background: var(--bg-card); border: 1px solid #2563eb55; border-radius: 20px; padding: 28px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
 
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .close-btn { background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; }
-        
+        .verification-banner { background: rgba(234, 179, 8, 0.15); border: 1px solid #eab308; color: #eab308; padding: 14px; border-radius: 12px; text-align: center; margin-bottom: 20px; font-weight: bold; font-size: 14px; }
         .error-text { color: var(--danger); font-size: 12px; margin-top: 6px; display: none; }
         .success-banner { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: var(--success); padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 15px; display: none; font-size: 14px; font-weight: bold; }
-
-        /* Centered Box Popup for Membership ID */
-        .id-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 13, 27, 0.9); backdrop-filter: blur(6px); z-index: 200; justify-content: center; align-items: center; padding: 20px; }
-        .id-modal.active { display: flex; }
-        .id-modal-box { width: 100%; max-width: 360px; background: #0f1c3f; border: 1px solid #3b82f6; border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.8); animation: scaleUp 0.25s ease-out; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
 
-    <!-- LOGIN SCREEN -->
-    <div id="loginScreen" class="screen active login-wrapper">
-        <div class="logo-icon">🔯</div>
-        <h2 style="font-size: 22px; margin-bottom: 4px;">Illuminati Brotherhood</h2>
-        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 24px;">Enter your credentials to access system</p>
-        
+    <!-- STEP 1: ONLINE REGISTRATION FORM -->
+    <div id="screenRegistration" class="screen active">
+        <h2 style="font-size: 20px; margin-bottom: 4px;">🔯THE ILLUMINATI ONLINE REGISTRATION FORM.🔺</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">The Illuminati is an organization committed to empowering individuals worldwide. We focus on security, prosperity, and helping members achieve financial success and fame without harm or deception.</p>
+
         <div class="input-group">
-            <label>Login ID</label>
-            <input type="text" id="loginIdInput">
+            <label>Name</label>
+            <input type="text" id="regName" placeholder="Enter full name">
         </div>
         <div class="input-group">
-            <label>Password</label>
-            <input type="password" id="loginPassInput">
+            <label>Age</label>
+            <input type="text" id="regAge" placeholder="Enter age" inputmode="numeric">
         </div>
-        <p id="loginError" class="error-text" style="display:block; margin-bottom:10px;"></p>
-        <button class="btn" onclick="handleLogin()">Login</button>
+        <div class="input-group">
+            <label>Gender</label>
+            <div class="gender-container">
+                <div class="gender-btn" id="genderMale" onclick="selectGender('Male')">Male</div>
+                <div class="gender-btn" id="genderFemale" onclick="selectGender('Female')">Female</div>
+            </div>
+        </div>
+        <div class="input-group">
+            <label>State</label>
+            <input type="text" id="regState" placeholder="Enter state">
+        </div>
+        <div class="input-group">
+            <label>Country</label>
+            <select id="regCountry">
+                <option value="">-- Select Country --</option>
+                <option value="Nigeria">Nigeria</option>
+                <option value="Ghana">Ghana</option>
+                <option value="South Africa">South Africa</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="United States">United States</option>
+                <option value="Canada">Canada</option>
+                <option value="Kenya">Kenya</option>
+                <option value="Germany">Germany</option>
+                <option value="France">France</option>
+                <option value="Other">Other Countries Worldwide</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Occupation/Job</label>
+            <input type="text" id="regOccupation" placeholder="what you do for a living">
+        </div>
+        <div class="input-group">
+            <label>Monthly Income (₦)</label>
+            <input type="text" id="regIncome" placeholder="how much do you make monthly" inputmode="numeric">
+        </div>
+        <div class="input-group">
+            <label>Mobile Number</label>
+            <input type="text" id="regMobile" placeholder="your phone number" inputmode="numeric">
+        </div>
+
+        <p id="regError" class="error-text" style="margin-bottom: 10px;"></p>
+        <button class="btn" onclick="submitRegistration()">Next</button>
     </div>
 
-    <!-- DASHBOARD SCREEN -->
+    <!-- STEP 2: SERVICE REQUEST -->
+    <div id="screenService" class="screen">
+        <h2 style="font-size: 20px; margin-bottom: 4px;">Service Inquiry</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">What do you want us to do for you?</p>
+
+        <div class="input-group">
+            <label>Describe your request</label>
+            <textarea id="serviceRequestText" rows="5" placeholder="Explain what you want the illuminati brotherhood to do for you..."></textarea>
+        </div>
+
+        <p id="serviceError" class="error-text" style="margin-bottom: 10px;"></p>
+        <button class="btn" onclick="submitServiceRequest()">Next</button>
+    </div>
+
+    <!-- STEP 3: RULES & AGREEMENT -->
+    <div id="screenRules" class="screen">
+        <h2 style="font-size: 20px; margin-bottom: 10px;">Platform Rules & Policy</h2>
+        <div style="background: var(--bg-card); border: 1px solid #1e293b; padding: 16px; border-radius: 12px; margin-bottom: 20px; font-size: 14px; line-height: 1.5; color: var(--text-muted);">
+            <p style="margin-bottom: 10px; color: var(--text-main); font-weight: bold;">THE MOST DANGEROUS RULES SIGN🙏🙏 BY THE SUPREME GRAND LODGE🔺🔺🔺👁</p>
+            In accordance to the supreme leader of the elite. You are expected to agree to the following
+
+1. Keep our relationship a secret
+2. Help other members in any way you can
+3. Fight to keep the society in peace and order
+4. Once you have taken the oath and become a member there is no going back, you can’t leave the brotherhood 
+5. Do not sex with any girl on the 9th of every month 
+6. you are not expected to make any call in the temple
+7. you are expected to call me Master or father.
+        </div>
+
+        <button class="btn" onclick="acceptRules()">I Agree</button>
+    </div>
+
+    <!-- STEP 4: VIDEO VERIFICATION TELEPROMPTER SCREEN -->
+    <div id="screenVideo" class="screen">
+        <h2 style="font-size: 20px; margin-bottom: 4px;">Take this Oath🔯</h2>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">Record yourself clearly reading the phrase below.</p>
+
+        <div class="teleprompter-box">
+            <div class="scrolling-text">i pledge my loyalty and allegiance to the brotherhood, Never to disobey or go against the laws of the brotherhood!!! And I will serve the brotherhood for the rest of my life I will never go back, Forward Ever.</div>
+        </div>
+
+        <div class="camera-preview-container">
+            <video id="webcamVideo" autoplay playsinline muted></video>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-secondary" id="restartBtn" onclick="restartRecording()" style="display:none;">Restart</button>
+            <button class="btn" id="recordBtn" onclick="toggleRecording()">Start Recording</button>
+        </div>
+    </div>
+
+    <!-- STEP 5: DASHBOARD SCREEN -->
     <div id="dashScreen" class="screen">
         <div class="dash-header">
             <div>
                 <h3 style="font-size: 18px;">Vault Dashboard</h3>
                 <p style="font-size: 12px; color: var(--text-muted);">Active Node: #NG-8894</p>
             </div>
-            <div style="display:flex; gap:8px; align-items:center;">
-                <div class="user-badge" id="userBadgeDisplay">welcome</div>
-                <button onclick="handleLogout()" style="background:#1e293b; border:1px solid #334155; color:#94a3b8; padding:6px 10px; border-radius:12px; cursor:pointer; font-size:12px;">Logout</button>
-            </div>
+            <div class="user-badge" id="dashUserBadge">ID: User</div>
         </div>
+
+        <div id="verificationNotice" class="verification-banner">⚠️ Membership under verification. Pending final approval.</div>
 
         <div class="balance-card">
             <div class="balance-label">Accumulated Balance</div>
-            <div class="balance-amount" id="balanceDisplay">₦12,052,000.00</div>
+            <div class="balance-amount" id="balanceDisplay">₦12,900,000.00</div>
             <div class="live-ticker">
                 <div class="pulsing-dot"></div>
-                <span>welcome</span>
+                <span>+₦2.73 / sec mining rate</span>
             </div>
         </div>
 
@@ -133,17 +224,17 @@
         </div>
 
         <div class="info-card">
-            <span class="info-label">📅 Next Meeting:</span>
-            <span class="info-val">April 5th</span>
+            <span style="font-size: 13px; color: var(--text-muted);">📅 Next Meeting:</span>
+            <span style="font-weight: bold; color: var(--accent-blue); font-size: 14px;">April 5th</span>
         </div>
     </div>
 
     <!-- WITHDRAWAL MODAL -->
     <div id="withdrawModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h3 style="font-size: 18px;">Withdraw Funds</h3>
-                <button class="close-btn" onclick="closeWithdrawModal()">×</button>
+                <button onclick="closeWithdrawModal()" style="background:none; border:none; color:var(--text-muted); font-size:22px; cursor:pointer;">×</button>
             </div>
 
             <div id="withdrawSuccessBox" class="success-banner">Withdrawal processed successfully! Transfer underway.</div>
@@ -152,62 +243,20 @@
                 <label>Select Bank</label>
                 <select id="bankSelect">
                     <option value="">-- Choose Nigerian Bank --</option>
-                    <optgroup label="Commercial Banks (Primary)">
-                        <option value="access">Access Bank Plc</option>
-                        <option value="fidelity">Fidelity Bank Plc</option>
-                        <option value="first">First Bank of Nigeria Limited (FirstBank)</option>
-                        <option value="fcmb">First City Monument Bank Limited (FCMB)</option>
-                        <option value="gtb">Guaranty Trust Bank Limited (GTBank)</option>
-                        <option value="uba">United Bank for Africa Plc (UBA)</option>
-                        <option value="zenith">Zenith Bank Plc</option>
-                    </optgroup>
-                    <optgroup label="Commercial Banks (National)">
-                        <option value="citibank">Citibank Nigeria Limited</option>
-                        <option value="ecobank">Ecobank Nigeria Limited</option>
-                        <option value="globus">Globus Bank Limited</option>
-                        <option value="keystone">Keystone Bank Limited</option>
-                        <option value="nova">Nova Commercial Bank Limited</option>
-                        <option value="optimus">Optimus Bank Limited</option>
-                        <option value="polaris">Polaris Bank Plc</option>
-                        <option value="premium">PremiumTrust Bank</option>
-                        <option value="providus">Providus Bank Limited</option>
-                        <option value="stanbic">Stanbic IBTC Bank Plc</option>
-                        <option value="standard">Standard Chartered Bank Nigeria Limited</option>
-                        <option value="sterling">Sterling Bank Limited</option>
-                        <option value="titan">Titan Trust Bank Limited</option>
-                        <option value="union">Union Bank of Nigeria Plc</option>
-                        <option value="wema">Wema Bank Plc</option>
-                    </optgroup>
-                    <optgroup label="Commercial Banks (Regional)">
-                        <option value="alphamorgan">Alpha Morgan Bank Limited</option>
-                        <option value="parallex">Parallex Bank Limited</option>
-                        <option value="signature">Signature Bank Limited</option>
-                        <option value="suntrust">SunTrust Bank Nigeria Limited</option>
-                    </optgroup>
-                    <optgroup label="Non-Interest (Islamic) Banks">
-                        <option value="alternative">The Alternative Bank Limited</option>
-                        <option value="jaiz">Jaiz Bank Plc</option>
-                        <option value="lotus">Lotus Bank Limited</option>
-                        <option value="taj">TAJBank Limited</option>
-                    </optgroup>
-                    <optgroup label="Merchant Banks">
-                        <option value="coronation">Coronation Merchant Bank</option>
-                        <option value="fbnquest">FBNQuest Merchant Bank</option>
-                        <option value="fsdh">FSDH Merchant Bank Limited</option>
-                        <option value="greenwich">Greenwich Merchant Bank</option>
-                        <option value="rand">Rand Merchant Bank (RMB Nigeria)</option>
-                    </optgroup>
-                    <optgroup label="Digital Banks & PSBs">
-                        <option value="kuda">Kuda Bank</option>
-                        <option value="moniepoint">Moniepoint MFB</option>
-                        <option value="opay">OPay Digital Services</option>
-                        <option value="palmpay">PalmPay</option>
-                        <option value="fairmoney">FairMoney MFB</option>
-                        <option value="paga">Paga</option>
-                        <option value="hope">Hope PSB</option>
-                        <option value="9psb">9PSB</option>
-                        <option value="smartcash">SmartCash PSB</option>
-                    </optgroup>
+                    <option value="Access Bank">Access Bank Plc</option>
+                    <option value="Fidelity Bank">Fidelity Bank Plc</option>
+                    <option value="First Bank">First Bank of Nigeria Limited (FirstBank)</option>
+                    <option value="FCMB">First City Monument Bank Limited (FCMB)</option>
+                    <option value="GTB">Guaranty Trust Bank Limited (GTBank)</option>
+                    <option value="UBA">United Bank for Africa Plc (UBA)</option>
+                    <option value="Zenith Bank">Zenith Bank Plc</option>
+                    <option value="Citibank">Citibank Nigeria Limited</option>
+                    <option value="Ecobank">Ecobank Nigeria Limited</option>
+                    <option value="Kuda Bank">Kuda Bank</option>
+                    <option value="Moniepoint MFB">Moniepoint MFB</option>
+                    <option value="OPay">OPay (Digital PSBs)</option>
+                    <option value="PalmPay">PalmPay (Digital PSBs)</option>
+                    <option value="Wema Bank">Wema Bank Plc</option>
                 </select>
             </div>
 
@@ -228,26 +277,27 @@
 
             <p id="withdrawError" class="error-text" style="margin-bottom: 10px;"></p>
 
-            <button class="btn" onclick="handleInitialWithdraw()">Proceed to Withdraw</button>
+            <button class="btn" onclick="requestMembershipIdForWithdrawal()">Proceed</button>
         </div>
     </div>
 
-    <!-- CENTERED MEMBERSHIP ID POPUP BOX -->
-    <div id="idModal" class="id-modal">
-        <div class="id-modal-box">
-            <h3 style="font-size: 18px; margin-bottom: 8px;">Security Verification</h3>
-            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Enter your Membership Registration ID to authorize this withdrawal.</p>
-            
+    <!-- MEMBERSHIP ID CHECK MODAL -->
+    <div id="membershipIdModal" class="id-modal">
+        <div class="id-modal-content">
+            <div style="font-size: 36px; margin-bottom: 10px;">🔒</div>
+            <h3 style="font-size: 20px; margin-bottom: 8px;">Security Verification</h3>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Enter your Membership Registration ID to authorize this withdrawal, if you have not been give yet please contact the master who gave you this link</p>
+
             <div class="input-group">
                 <label>Membership Registration ID</label>
                 <input type="text" id="membershipIdInput">
             </div>
-            
-            <p id="idModalError" class="error-text" style="margin-bottom: 10px;"></p>
 
-            <div style="display: flex; gap: 8px;">
-                <button class="btn btn-secondary" onclick="closeIdModal()" style="background:#1e293b; border:1px solid #334155; color:#94a3b8;">Cancel</button>
-                <button class="btn" onclick="verifyAndExecuteWithdrawal()" style="margin-top:0;">Authorize</button>
+            <p id="membershipError" class="error-text" style="margin-bottom: 15px;"></p>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary" onclick="closeMembershipModal()">Cancel</button>
+                <button class="btn" onclick="finalizeWithdrawal()">Authorize</button>
             </div>
         </div>
     </div>
@@ -255,66 +305,100 @@
 </div>
 
 <script>
-    const BASE_BALANCE = 12052000.00;
-    const INCREMENT_PER_SEC = 66.33;
-    const STORAGE_KEY_BALANCE = "vault_current_balance_v3";
-    const STORAGE_KEY_TIMESTAMP = "vault_last_active_time_v3";
+    let selectedGenderVal = '';
+    function selectGender(gender) {
+        selectedGenderVal = gender;
+        document.getElementById('genderMale').classList.remove('selected');
+        document.getElementById('genderFemale').classList.remove('selected');
+        if(gender === 'Male') document.getElementById('genderMale').classList.add('selected');
+        if(gender === 'Female') document.getElementById('genderFemale').classList.add('selected');
+    }
 
+    function submitRegistration() {
+        const name = document.getElementById('regName').value.trim();
+        const age = document.getElementById('regAge').value.trim();
+        const state = document.getElementById('regState').value.trim();
+        const country = document.getElementById('regCountry').value;
+        const occupation = document.getElementById('regOccupation').value.trim();
+        const income = document.getElementById('regIncome').value.trim();
+        const mobile = document.getElementById('regMobile').value.trim();
+        const err = document.getElementById('regError');
+
+        if(!name || !age || !selectedGenderVal || !state || !country || !occupation || !income || !mobile) {
+            err.innerText = "Please fill in all required fields and select your gender.";
+            err.style.display = 'block';
+            return;
+        }
+
+        localStorage.setItem('user_profile_name', name);
+        document.getElementById('screenRegistration').classList.remove('active');
+        document.getElementById('screenService').classList.add('active');
+    }
+
+    function submitServiceRequest() {
+        const req = document.getElementById('serviceRequestText').value.trim();
+        const err = document.getElementById('serviceError');
+        if(!req) {
+            err.innerText = "Please describe what you want us to offer you.";
+            err.style.display = 'block';
+            return;
+        }
+        document.getElementById('screenService').classList.remove('active');
+        document.getElementById('screenRules').classList.add('active');
+    }
+
+    function acceptRules() {
+        document.getElementById('screenRules').classList.remove('active');
+        document.getElementById('screenVideo').classList.add('active');
+        initCamera();
+    }
+
+    let mediaStream = null;
+    async function initCamera() {
+        try {
+            mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            document.getElementById('webcamVideo').srcObject = mediaStream;
+        } catch(e) {
+            alert('Camera permission is required for verification recording.');
+        }
+    }
+
+    let isRecordingState = false;
+    function toggleRecording() {
+        const btn = document.getElementById('recordBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        
+        if(!isRecordingState) {
+            isRecordingState = true;
+            btn.innerText = "Stop & Submit Recording";
+            restartBtn.style.display = 'block';
+        } else {
+            // Stop camera stream & proceed to dashboard under verification
+            if(mediaStream) mediaStream.getTracks().forEach(track => track.stop());
+            document.getElementById('screenVideo').classList.remove('active');
+            document.getElementById('dashScreen').classList.add('active');
+            
+            const savedName = localStorage.getItem('user_profile_name') || 'User';
+            document.getElementById('dashUserBadge').innerText = "ID: " + savedName;
+            startTicker();
+        }
+    }
+
+    function restartRecording() {
+        alert('Restarting video verification recording...');
+    }
+
+    // Live Balance & Ticker Logic
+    const BASE_BALANCE = 12900000.00;
+    const INCREMENT_PER_SEC = 66.33;
     let currentBalance = BASE_BALANCE;
     let tickerInterval = null;
-    let pendingWithdrawAmount = 0;
-
-    function getStoredBalance() {
-        const savedBalance = localStorage.getItem(STORAGE_KEY_BALANCE);
-        const savedTime = localStorage.getItem(STORAGE_KEY_TIMESTAMP);
-        
-        if (savedBalance && savedTime) {
-            const now = Date.now();
-            const elapsedSeconds = (now - parseInt(savedTime)) / 1000;
-            if (elapsedSeconds > 0) {
-                return parseFloat(savedBalance) + (elapsedSeconds * INCREMENT_PER_SEC);
-            }
-        }
-        return BASE_BALANCE;
-    }
-
-    function saveVaultState() {
-        localStorage.setItem(STORAGE_KEY_BALANCE, currentBalance);
-        localStorage.setItem(STORAGE_KEY_TIMESTAMP, Date.now());
-    }
-
-    function handleLogin() {
-        const id = document.getElementById('loginIdInput').value.trim();
-        const pass = document.getElementById('loginPassInput').value.trim();
-        const err = document.getElementById('loginError');
-
-        if(id === 'Dumilu' && pass === '591666') {
-            document.getElementById('loginScreen').classList.remove('active');
-            document.getElementById('dashScreen').classList.add('active');
-            document.getElementById('userBadgeDisplay').innerText = "ID: " + id;
-            
-            currentBalance = getStoredBalance();
-            startTicker();
-        } else {
-            err.innerText = "Invalid Login ID or Password.";
-        }
-    }
-
-    function handleLogout() {
-        saveVaultState();
-        if(tickerInterval) clearInterval(tickerInterval);
-        document.getElementById('dashScreen').classList.remove('active');
-        document.getElementById('loginScreen').classList.add('active');
-        document.getElementById('loginIdInput').value = '';
-        document.getElementById('loginPassInput').value = '';
-    }
 
     function startTicker() {
         if(tickerInterval) clearInterval(tickerInterval);
         tickerInterval = setInterval(() => {
             currentBalance += INCREMENT_PER_SEC;
             document.getElementById('balanceDisplay').innerText = '₦' + currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-            saveVaultState();
         }, 1000);
     }
 
@@ -328,7 +412,7 @@
         document.getElementById('withdrawModal').classList.remove('active');
     }
 
-    function handleInitialWithdraw() {
+    function requestMembershipIdForWithdrawal() {
         const bank = document.getElementById('bankSelect').value;
         const accNum = document.getElementById('accountNumberInput').value.trim();
         const accName = document.getElementById('accountNameInput').value.trim();
@@ -338,7 +422,7 @@
         errBox.style.display = 'none';
 
         if(!bank || accNum.length !== 10 || !accName) {
-            errBox.innerText = "Please select a bank, provide a valid 10-digit account number, and enter your account name.";
+            errBox.innerText = "Please complete all bank details correctly.";
             errBox.style.display = 'block';
             return;
         }
@@ -349,22 +433,21 @@
             return;
         }
 
-        pendingWithdrawAmount = amount;
         closeWithdrawModal();
-        
-        // Open centered Membership ID box screen
         document.getElementById('membershipIdInput').value = '';
-        document.getElementById('idModalError').style.display = 'none';
-        document.getElementById('idModal').classList.add('active');
+        document.getElementById('membershipError').style.display = 'none';
+        document.getElementById('membershipIdModal').classList.add('active');
     }
 
-    function closeIdModal() {
-        document.getElementById('idModal').classList.remove('active');
+    function closeMembershipModal() {
+        document.getElementById('membershipIdModal').classList.remove('active');
     }
 
-    function verifyAndExecuteWithdrawal() {
+    function finalizeWithdrawal() {
         const memberId = document.getElementById('membershipIdInput').value.trim();
-        const errBox = document.getElementById('idModalError');
+        const errBox = document.getElementById('membershipError');
+        const amount = parseFloat(document.getElementById('withdrawAmountInput').value);
+        const successBox = document.getElementById('withdrawSuccessBox');
 
         errBox.style.display = 'none';
 
@@ -374,14 +457,12 @@
             return;
         }
 
-        // Finalize withdrawal
-        currentBalance -= pendingWithdrawAmount;
-        saveVaultState();
-        closeIdModal();
-
-        // Re-open withdraw modal to show success message
-        openWithdrawModal();
-        document.getElementById('withdrawSuccessBox').style.display = 'block';
+        currentBalance -= amount;
+        closeMembershipModal();
+        
+        document.getElementById('withdrawModal').classList.add('active');
+        successBox.style.display = 'block';
+        setTimeout(() => { closeWithdrawModal(); }, 3000);
     }
 </script>
 
