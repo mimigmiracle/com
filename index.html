@@ -188,25 +188,6 @@
         <button class="btn" onclick="acceptRules()">I Agree</button>
     </div>
 
-        <!-- STEP 4: PHOTO UPLOAD VERIFICATION SCREEN -->
-    <div id="screenVideo" class="screen">
-        <h2 style="font-size: 20px; margin-bottom: 4px;">Photo Verification</h2>
-        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Please upload a clear picture of yourself to complete verification.</p>
-
-        <div class="input-group" style="text-align: center; padding: 30px; border: 2px dashed #2563eb55; border-radius: 14px; background: var(--bg-card); margin-bottom: 20px;">
-            <input type="file" id="photoUploadInput" accept="image/*" style="display: none;" onchange="previewUserPhoto(event)">
-            <div id="photoPreviewContainer" onclick="document.getElementById('photoUploadInput').click()" style="cursor: pointer;">
-                <div style="font-size: 40px; margin-bottom: 10px;">📷</div>
-                <p style="font-size: 14px; font-weight: bold; color: var(--text-main);">Click here to upload your picture</p>
-                <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Supports JPG, PNG</p>
-            </div>
-            <img id="uploadedPhotoPreview" style="display: none; width: 100%; max-height: 220px; object-fit: cover; border-radius: 10px; margin-top: 10px;">
-        </div>
-
-        <p id="photoError" class="error-text" style="margin-bottom: 10px;"></p>
-        <button class="btn" onclick="submitPhotoVerification()">Submit & Proceed</button>
-    </div>
-
     <!-- STEP 5: DASHBOARD SCREEN -->
     <div id="dashScreen" class="screen">
         <div class="dash-header">
